@@ -49,25 +49,19 @@ notes.delete('/:id', (req, res) => {
   const noteId = req.params.id;
   console.log('ID', noteId);
   readFromFile('./db/db.json', 'utf8')
-    .then((data) => {
-      (JSON.parse(data));
-      return data
-    })
+    .then((data) => {(JSON.parse(data)); return data})
 
     .then((json) => {
-      console.log(JSON.parse(json))
 
       // new array of all notes except the one with the ID provided in the URL
       const result = JSON.parse(json).filter((note) => note.id !== noteId);
 
-      console.log('result', result)
-
       // save new array to the filesystem
       writeToFile('./db/db.json', result);
-
-      res.json(`Item ${noteId} has been deleted 🗑️`);
-    
     })
+
+    .then(() => {res.sendStatus(200)})
+    .catch(err => console.log(err))
 });
 
 module.exports = notes;
