@@ -6,12 +6,10 @@ const {
   writeToFile,
 } = require('../fsUtils');
 
-// GET Route for retrieving all the notes
 notes.get('/', (req, res) => {
   readFromFile('./db/db.json', 'utf8').then((data) => res.json(JSON.parse(data)));
 });
 
-// GET Route for a specific note
 notes.get('/:id', (req, res) => {
   const noteId = req.params.id;
   readFromFile('./db/db.json')
@@ -24,7 +22,6 @@ notes.get('/:id', (req, res) => {
     });
 });
 
-// POST Route for a new note
 notes.post('/', (req, res) => {
   console.log(req.body);
 
@@ -44,7 +41,6 @@ notes.post('/', (req, res) => {
   }
 });
 
-// DELETE Route for a specific note
 notes.delete('/:id', (req, res) => {
   const noteId = req.params.id;
   console.log('ID', noteId);
@@ -53,10 +49,8 @@ notes.delete('/:id', (req, res) => {
 
     .then((json) => {
 
-      // new array of all notes except the one with the ID provided in the URL
       const result = JSON.parse(json).filter((note) => note.id !== noteId);
 
-      // save new array to the filesystem
       writeToFile('./db/db.json', result);
     })
 
