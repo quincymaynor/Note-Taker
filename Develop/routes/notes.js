@@ -48,14 +48,19 @@ notes.post('/', (req, res) => {
 notes.delete('/:id', (req, res) => {
   const noteId = req.params.id;
   console.log('ID', noteId);
-  readFromFile('./db/db.json')
-    .then((data) => {console.log('new', data); JSON.parse(data)} ) 
-    .then((json) => {
-      console.log(json)
-      // new array of all notes except the one with the ID provided in the URL
-      const result = json.filter((note) => note.id !== noteId);
+  readFromFile('./db/db.json', 'utf8')
+    .then((data) => {
+      (JSON.parse(data));
+      return data
+    })
 
-      console.log(result)
+    .then((json) => {
+      console.log(JSON.parse(json))
+
+      // new array of all notes except the one with the ID provided in the URL
+      const result = JSON.parse(json).filter((note) => note.id !== noteId);
+
+      console.log('result', result)
 
       // save new array to the filesystem
       writeToFile('./db/db.json', result);
